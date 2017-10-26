@@ -3,17 +3,20 @@ var router = express.Router();
 var Product = require('../models/product');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next){
   
-    Product.find(function(err, docs){
-      var productChunks = [];
-      var chunkSize = 3;
-      for (var i=0; i<docs.length; i+=chunkSize){
-        productChunks.push(docs.slice(i, i+chunkSize));
-      }
-      res.render('shop/index', { title: 'Shopping Cart', products: productChunks });
-    }); // fetching items from mongoDB
-  
+  //connect to db, and sending data to front-end
+  Product.find(function(err, docs){
+    
+    var productChunks = [];
+    var chunk = 3;
+
+    for(let i = 0; i<docs.length; i+=chunk){
+      productChunks.push(docs.slice(i, i+chunk));
+    }
+    res.render('shop/index', {title: 'LandingShop', products: productChunks})
+  });
+
 });
 
 module.exports = router;
